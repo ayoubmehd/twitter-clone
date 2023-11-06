@@ -1,0 +1,1 @@
+<x-tweet :tweet="$tweet" />

@@ -26,7 +26,7 @@ class TweetController extends Controller
 
         $tweet = Tweet::create([
             "content" => $validated["content"],
-            "user_id" => 1
+            "user_id" => auth()->user()->id
         ]);
 
         return view("partails.tweets.show", [

@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Tweet;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TweetController extends Controller
 {
 
     public function index()
     {
-        return view("home", [
-            "tweets" => Tweet::whereParentId(null)->withCount('likes')->withCount('replies')->latest()->get()
+        return Inertia::render('Home', [
+            'tweets' => Tweet::with(['user', 'likes'])->latest()->paginate(50),
+            'csrf_token' => csrf_token(),
         ]);
     }
 

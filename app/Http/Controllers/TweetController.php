@@ -12,11 +12,13 @@ class TweetController extends Controller
 
     public function index()
     {
+        $tweetQuery = Tweet::whereNull('parent_id')->with([
+            'user', 'likes', 'replies' => fn ($query) => $query->with('user')->withCount('likes')
+        ])->withCount('likes', 'replies');
+
         return Inertia::render('Home', [
             'tweets' => TweetResource::collection(
-                Tweet::with(
-                    ['user', 'likes']
-                )->latest()->paginate(50)
+                $tweetQuery->latest()->paginate(10)
             ),
         ]);
     }
@@ -24,16 +26,17 @@ class TweetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Tweet $tweet)
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            "content" => "required|max:255"
+            "content" => "required|max:255",
+            "parent_id" => "nullable|exists:tweets,id"
         ]);
 
-        $tweet = Tweet::create([
+        Tweet::create([
             "content" => $validated["content"],
             "user_id" => auth()->user()->id,
-            "parent_id" => $tweet?->id ?? null
+            "parent_id" => $validated['parent_id'] ?? null
         ]);
 
         return to_route('home');

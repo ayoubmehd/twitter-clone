@@ -1,17 +1,19 @@
 import { router } from "@inertiajs/react";
 import { useForm } from "react-hook-form";
 
-export function TweetForm({ csrf_token }) {
+export function TweetForm({ parent_id = null }) {
     const { register, handleSubmit, reset } = useForm();
 
     const onSubmit = (data) => {
-        router.post(route("tweets.store"), data);
+        router.post(route("tweets.store"), {
+            ...data,
+            parent_id,
+        });
         reset();
     };
 
     return (
-        <form method="POST" className="pt-12" onSubmit={handleSubmit(onSubmit)}>
-            <input type="hidden" name="_token" value={csrf_token} />
+        <form method="POST" onSubmit={handleSubmit(onSubmit)}>
             <div className="sm:col-span-2">
                 <label
                     htmlFor="message"

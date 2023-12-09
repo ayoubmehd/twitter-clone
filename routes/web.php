@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');
-    Route::delete('/tweets/{tweet}/like', [LikeController::class, 'destroy'])->name('tweets.unlike');
+    Route::delete('/tweets/{tweet}/like', [LikeController::class, 'destroy'])->name('tweets.like');
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

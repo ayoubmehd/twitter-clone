@@ -11,14 +11,14 @@ class TweetController extends Controller
     public function index()
     {
         return view("home", [
-            "tweets" => Tweet::latest()->get()
+            "tweets" => Tweet::whereParentId(null)->withCount('likes')->withCount('replies')->latest()->get()
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Tweet $tweet)
     {
         $validated = $request->validate([
             "content" => "required|max:255"
@@ -26,7 +26,8 @@ class TweetController extends Controller
 
         $tweet = Tweet::create([
             "content" => $validated["content"],
-            "user_id" => auth()->user()->id
+            "user_id" => auth()->user()->id,
+            "parent_id" => $tweet?->id ?? null
         ]);
 
         return view("partails.tweets.show", [

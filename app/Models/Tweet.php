@@ -9,7 +9,8 @@ class Tweet extends Model
 {
     protected $fillable = [
         "content",
-        "user_id"
+        "user_id",
+        "parent_id",
     ];
 
     use HasFactory;
@@ -18,5 +19,15 @@ class Tweet extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Tweet::class, "parent_id");
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 }

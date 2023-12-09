@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("content", 255);
             $table->bigInteger("user_id");
+            $table->bigInteger("parent_id")->nullable();
             $table->timestamps();
 
             $table->index([

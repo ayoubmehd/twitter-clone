@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post("/tweets/{tweet?}", [TweetController::class, "store"])->name("tweets.store");
 
-    Route::get('/', [TweetController::class, 'index']);
+    Route::get('/', [TweetController::class, 'index'])->name('home');
 
 
     Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');

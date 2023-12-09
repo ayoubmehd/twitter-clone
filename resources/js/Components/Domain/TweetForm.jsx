@@ -1,16 +1,26 @@
+import { router } from "@inertiajs/react";
+import { useForm } from "react-hook-form";
+
 export function TweetForm({ csrf_token }) {
+    const { register, handleSubmit, reset } = useForm();
+
+    const onSubmit = (data) => {
+        router.post(route("tweets.store"), data);
+        reset();
+    };
+
     return (
-        <form method="POST">
+        <form method="POST" className="pt-12" onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" name="_token" value={csrf_token} />
             <div className="sm:col-span-2">
                 <label
                     htmlFor="message"
-                    className="mb-2 inline-block text-sm text-gray-800 sm:text-base"
+                    className="mb-2 inline-block text-sm text-gray-800 dark:text-white sm:text-base"
                 >
                     What's on your mind?
                 </label>
                 <textarea
-                    name="content"
+                    {...register("content")}
                     placeholder="Enter your message here"
                     className="h-64 w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                 ></textarea>

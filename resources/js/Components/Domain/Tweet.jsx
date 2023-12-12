@@ -1,10 +1,6 @@
-import { useState } from "react";
-import { TweetForm } from "./TweetForm";
-import { useForm } from "react-hook-form";
 import { router } from "@inertiajs/react";
 
 export default function Tweet({ tweet, replyForm, onReply = () => {} }) {
-    const { handleSubmit, register } = useForm();
 
     const likeTweet = () => {
         router.post(route("tweets.like", tweet.id));
@@ -51,15 +47,17 @@ export default function Tweet({ tweet, replyForm, onReply = () => {} }) {
                             viewBox="0 0 24 24"
                             className="dark:fill-white"
                         >
-                            <title>Comment {tweet.replies_count || 0}</title>
+                            <title>Comment {tweet.replies_count}</title>
                             <path d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7C5,5.89 5.9,5 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.9 12.75,23 12.5,23V23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z" />
                         </svg>
                     </button>
-                    <div className="w-6 flex justify-center">
-                        {tweet.replies_count || 0}
-                    </div>
+                    {tweet.replies_count ? (
+                        <div className="w-6 flex justify-center">
+                            {tweet.replies_count}
+                        </div>
+                    ) : ''}
                     <button
-                        className="inline-flex w-6 h-6"
+                        className="inline-flex w-8 h-6 px-1"
                         onClick={() => {
                             tweet.liked ? unlikeTweet() : likeTweet();
                         }}
@@ -69,7 +67,7 @@ export default function Tweet({ tweet, replyForm, onReply = () => {} }) {
                             viewBox="0 0 24 24"
                             className="dark:fill-white"
                         >
-                            <title>Like {tweet.likes_count || 0}</title>
+                            <title>Like {tweet.likes_count}</title>
                             {tweet.liked ? (
                                 <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
                             ) : (
@@ -79,7 +77,7 @@ export default function Tweet({ tweet, replyForm, onReply = () => {} }) {
                     </button>
 
                     <div className="w-6 flex justify-center">
-                        {tweet.likes_count || 0}
+                        {tweet.likes_count}
                     </div>
                 </div>
 

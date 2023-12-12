@@ -5,7 +5,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Home({ auth, tweets, csrf_token }) {
+export default function Home({ auth, tweets }) {
     const [openReplyForm, setOpenForm] = useState(-1);
 
     const updateOpenForm = (id) => {

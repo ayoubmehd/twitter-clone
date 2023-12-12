@@ -3,6 +3,7 @@
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use App\Models\Tweet;
 use Illuminate\Support\Facades\Route;
@@ -27,12 +28,21 @@ use Inertia\Inertia;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+require __DIR__.'/auth.php';
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
+    Route::get('/', [TweetController::class, 'index'])->name('home');
+    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/{user}', [UserController::class, 'show'])->name('user.public-profile');
 
     Route::get('/tweets/{tweet}', function (Tweet $tweet) {
         return view('components.tweet-form', [
@@ -44,16 +54,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post("/tweets/{tweet?}", [TweetController::class, "store"])->name("tweets.store");
 
-    Route::get('/', [TweetController::class, 'index'])->name('home');
 
 
     Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');
     Route::delete('/tweets/{tweet}/like', [LikeController::class, 'destroy'])->name('tweets.like');
-
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';

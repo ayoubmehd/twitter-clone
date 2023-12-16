@@ -1,10 +1,10 @@
 import Tweet from "@/Components/Domain/Tweet";
 import Container from "@/Components/core/Container";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function PublicProfile({ auth, user, canEdit, tweets }) {
+export default function PublicProfile({ auth, user, canEdit, tweets, isFollowed }) {
     const [openReplyForm, setOpenForm] = useState(-1);
 
     const updateOpenForm = (id) => {
@@ -14,6 +14,14 @@ export default function PublicProfile({ auth, user, canEdit, tweets }) {
             setOpenForm(id);
         }
     }
+
+    const follow = () => {
+        router.post(route('user.follow', user));
+    }
+
+    const unfollow = () => {
+        router.delete(route('user.follow', user));
+    }    
 
     return (
         <Authenticated user={auth.user}>
@@ -80,8 +88,8 @@ export default function PublicProfile({ auth, user, canEdit, tweets }) {
                                             Edit
                                         </Link>
                                         :
-                                        <button className="w-full rounded-xl border-2 border-blue-500 dark:border-blue-950 bg-white px-3 py-2 font-semibold text-blue-500 dark:text-blue-950 hover:bg-blue-500 hover:text-white">
-                                            Follow
+                                        <button onClick={isFollowed ? unfollow : follow} className="w-full rounded-xl border-2 border-blue-500 dark:border-blue-950 bg-white px-3 py-2 font-semibold text-blue-500 dark:text-blue-950 hover:bg-blue-500 hover:text-white">
+                                            { isFollowed ? 'Unfollow' : 'Follow' }
                                         </button>
 
                                 }

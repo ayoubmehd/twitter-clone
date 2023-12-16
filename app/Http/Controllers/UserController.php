@@ -17,6 +17,7 @@ class UserController extends Controller
             'user' => $user->load('tweets', 'followers', 'following'),
             'canEdit' => auth()->check() && auth()->user()->id === $user->id,
             'tweets' => $user->tweets()->with('user')->latest()->paginate(10),
+            'isFollowed' => $user->followers()->where('follower_id', auth()->id())->exists(),
         ]);
     }
 
@@ -25,9 +26,9 @@ class UserController extends Controller
      */
     public function follow(Request $request, User $user)
     {
-        $user->following()->attach($request->user()->id);
+        $user->followers()->attach($request->user()->id);
 
-        return back();
+        return to_route('user.public-profile', ['user' => $user]);
     }
 
     /**
@@ -35,8 +36,8 @@ class UserController extends Controller
      */
     public function unfollow(Request $request, User $user)
     {
-        $user->following()->detach($request->user()->id);
+        $user->followers()->detach($request->user()->id);
 
-        return back();
+        return to_route('user.public-profile', ['user' => $user]);
     }
 }

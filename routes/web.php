@@ -42,7 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/{user}', [UserController::class, 'show'])->name('user.public-profile');
+    Route::get('/u/{user}', [UserController::class, 'show'])->name('user.public-profile');
+    Route::post('/u/{user}/follow', [UserController::class, 'follow'])->name('user.follow');
+    Route::delete('/u/{user}/follow', [UserController::class, 'unfollow'])->name('user.unfollow');
 
     Route::get('/tweets/{tweet}', function (Tweet $tweet) {
         return view('components.tweet-form', [

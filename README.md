@@ -23,7 +23,7 @@ composer install
 ```
 
 Create a mysql database, Copy .env.example to .env and put the database cofig in the new .env file
-
+> If you have docker & docker-compose installed just run `docker-compose up` this will start a mysql database with credentials username=root password=root
 
 #### Run migration
 ```copy

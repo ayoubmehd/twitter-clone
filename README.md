@@ -2,6 +2,9 @@
 
 ## Setting up the project
 
+## Presentaion
+[Presentaion](https://docs.google.com/presentation/d/1xxM7AeKwUhgpbnYbbt3ZS3NDvdaVQyeEAgH6Nsj7Hog/edit#slide=id.p)
+
 ### Requirements
 - PHP v8.x
 - composer v2.x

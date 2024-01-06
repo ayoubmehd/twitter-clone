@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DmController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
@@ -37,7 +38,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [TweetController::class, 'index'])->name('home');
-    
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -56,7 +57,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post("/tweets/{tweet?}", [TweetController::class, "store"])->name("tweets.store");
 
-
+    Route::prefix('dm')->group(function () {
+        Route::get('/{thread?}', [DmController::class, 'index'])->name('dm.index');
+        Route::post('/{user}', [DmController::class, 'store'])->name('dm.store');
+        Route::patch('/{thread}', [DmController::class, 'index'])->name('dm.update');
+        Route::get('/{user}', [DmController::class, 'show'])->name('dm.show');
+    });
 
     Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');
     Route::delete('/tweets/{tweet}/like', [LikeController::class, 'destroy'])->name('tweets.like');
